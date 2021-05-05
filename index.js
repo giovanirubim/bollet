@@ -1,4 +1,5 @@
 require('dotenv').config();
+const http = require('http');
 const Discord = require('discord.js');
 const TOKEN = process.env.TOKEN || '';
 const client = new Discord.Client();
@@ -36,3 +37,12 @@ client.on('message', (message) => {
 	}
 });
 client.login(TOKEN);
+http.createServer((req, res) => {
+	const text = 'Running';
+	res.writeHead(200, {
+		'content-type': 'text/plain',
+		'content-length': text.length,
+	});
+	res.write(text);
+	res.end();
+}).listen(process.env.PORT || 8080);
