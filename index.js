@@ -3,21 +3,30 @@ const http = require('http');
 const Discord = require('discord.js');
 const TOKEN = process.env.TOKEN || '';
 const client = new Discord.Client();
+
+let time = null;
+const startServer = () => {
+	http.createServer((req, res) => {
+		const text = 'Running since: ' + time.toISOString();
+		res.writeHead(200, {
+			'content-type': 'text/plain',
+			'content-length': text.length,
+		});
+		res.write(text);
+		res.end();
+	}).listen(process.env.PORT || 8080, () => {
+		time = new Date();
+		console.log('HTTP server started');
+	});
+};
+
 client.once('ready', () => {
 	console.log('Running');
+	startServer();
 });
-const getKeys = (obj) => {
-	const res = [];
-	for (let attr in obj) {
-		if (typeof attr === 'string') {
-			res.push(attr);
-		}
-	}
-	return res.sort();
-};
-const regex = /^\s*bot\s\w+\s*$/i;
+
 client.on('message', (message) => {
-	if (!regex.test(message)) {
+	if (!/^\s*bot\s\w+\s*$/i.test(message)) {
 		return;
 	}
 	message.delete();
@@ -36,13 +45,5 @@ client.on('message', (message) => {
 		member.roles.remove(role);
 	}
 });
+
 client.login(TOKEN);
-http.createServer((req, res) => {
-	const text = 'Running';
-	res.writeHead(200, {
-		'content-type': 'text/plain',
-		'content-length': text.length,
-	});
-	res.write(text);
-	res.end();
-}).listen(process.env.PORT || 8080);
