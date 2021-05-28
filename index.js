@@ -44,7 +44,7 @@ const removeRole = (name, message) => {
 };
 
 client.on('message', (message) => {
-	if (!/^\s*bot\s\w+\s*$/i.test(message)) {
+	if (!/^\s*bot\s\w+$/i.test(message)) {
 		return;
 	}
 	message.delete();
@@ -56,9 +56,6 @@ client.on('message', (message) => {
 	}
 	if (message.content.match(/promov/i)) {
 		addRole('King-Queen', message);
-	}
-	if (message.content.match(/rebaix/i)) {
-		removeRole('King-Queen', message);
 	}
 });
 
