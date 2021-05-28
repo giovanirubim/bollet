@@ -25,24 +25,40 @@ client.once('ready', () => {
 	startServer();
 });
 
+const addRole = (name, message) => {
+	const role = message.guild.roles.cache.find((role) => role.name === name);
+	const member = message.guild.members.cache.get(message.author.id);
+	if (!role) {
+		return;
+	}
+	member.roles.add(role);
+};
+
+const removeRole = (name, message) => {
+	const role = message.guild.roles.cache.find((role) => role.name === name);
+	const member = message.guild.members.cache.get(message.author.id);
+	if (!role) {
+		return;
+	}
+	member.roles.remove(role);
+};
+
 client.on('message', (message) => {
 	if (!/^\s*bot\s\w+\s*$/i.test(message)) {
 		return;
 	}
 	message.delete();
-	const role = message.guild.roles.cache.find((role) => role.name === 'Eyes');
-	if (!role) {
-		return;
-	}
-	const member = message.guild.members.cache.get(message.author.id);
-	if (!member) {
-		return;
-	}
 	if (message.content.match(/mostr/i)) {
-		member.roles.add(role);
+		addRole('Eyes', message);
 	}
 	if (message.content.match(/escond/i)) {
-		member.roles.remove(role);
+		removeRole('Eyes', message);
+	}
+	if (message.content.match(/promov/i)) {
+		addRole('King-Queen', message);
+	}
+	if (message.content.match(/rebaix/i)) {
+		removeRole('King-Queen', message);
 	}
 });
 
