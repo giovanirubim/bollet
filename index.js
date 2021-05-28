@@ -44,7 +44,7 @@ const removeRole = (name, message) => {
 };
 
 client.on('message', (message) => {
-	if (!/^\s*bot\s\w+$/i.test(message)) {
+	if (!/^\s*bot\s\w+/i.test(message)) {
 		return;
 	}
 	message.delete();
