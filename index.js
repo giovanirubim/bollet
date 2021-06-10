@@ -5,24 +5,9 @@ const TOKEN = process.env.TOKEN || '';
 const client = new Discord.Client();
 
 let time = null;
-const startServer = () => {
-	http.createServer((req, res) => {
-		const text = 'Running since: ' + time.toISOString();
-		res.writeHead(200, {
-			'content-type': 'text/plain',
-			'content-length': text.length,
-		});
-		res.write(text);
-		res.end();
-	}).listen(process.env.PORT || 8080, () => {
-		time = new Date();
-		console.log('HTTP server started');
-	});
-};
 
 client.once('ready', () => {
 	console.log('Running');
-	startServer();
 });
 
 const addRole = (name, message) => {
